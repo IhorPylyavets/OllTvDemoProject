@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -19,8 +20,13 @@ android {
 
     buildTypes {
         release {
+            buildConfigField "String", "BASE_URL", "\"http://oll.tv\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            buildConfigField "String", "BASE_URL", "\"http://oll.tv\""
         }
     }
     compileOptions {
@@ -29,6 +35,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
     }
 }
 
@@ -42,4 +51,21 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation "org.koin:koin-androidx-scope:2.2.2"
+    implementation "org.koin:koin-androidx-viewmodel:2.2.2"
+    implementation "org.koin:koin-core:2.2.2"
+
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+
+    implementation 'androidx.databinding:viewbinding:4.1.1'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.7.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
