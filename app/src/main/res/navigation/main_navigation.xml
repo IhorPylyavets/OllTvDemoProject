@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/barcode_activity_nav_graph"
+    app:startDestination="@+id/channelListFragment">
+
+    <fragment
+        android:id="@+id/channelListFragment"
+        android:name="com.example.olltvapplication.ui.channelList.ChannelListFragment"
+        android:label="ChannelListFragment">
+        <action
+            android:id="@+id/action_channelListFragment_to_channelDetailsFragment"
+            app:destination="@id/channelDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/channelDetailsFragment"
+        android:name="com.example.olltvapplication.ui.channelDetails.ChannelDetailsFragment"
+        android:label="ChannelDetailsFragment">
+    </fragment>
+
+</navigation>

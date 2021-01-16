@@ -1,16 +1,16 @@
-package com.example.olltvapplication.ui
+package com.example.olltvapplication.ui.channelList
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.olltvapplication.base.BaseViewModel
-import com.example.olltvapplication.data.ResponseItem
+import com.example.olltvapplication.data.ChannelItem
 import com.example.olltvapplication.repository.OllTvRepository
 
-class MainActivityViewModel(
+class ChannelListViewModel(
         private val repository: OllTvRepository
 ): BaseViewModel() {
 
-    val itemList = MutableLiveData<List<ResponseItem>>()
+    val itemList = MutableLiveData<List<ChannelItem>>()
 
     var borderId: Long = 0
     var direction = 0
@@ -35,7 +35,7 @@ class MainActivityViewModel(
                     }
                 },
                 error = {
-                    Log.e(MainActivityViewModel::class.java.name, it.message.toString())
+                    Log.e(ChannelListViewModel::class.java.name, it.message.toString())
                 }
         )
     }

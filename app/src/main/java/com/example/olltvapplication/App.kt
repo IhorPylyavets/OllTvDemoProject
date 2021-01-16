@@ -3,6 +3,7 @@ package com.example.olltvapplication
 import android.app.Application
 import androidx.lifecycle.LifecycleObserver
 import com.example.olltvapplication.di.appModule
+import com.example.olltvapplication.di.navigationModule
 import com.example.olltvapplication.di.networkModule
 import com.example.olltvapplication.di.repositoryModule
 import org.koin.android.ext.koin.androidContext
@@ -22,7 +23,7 @@ class App: Application(), LifecycleObserver {
             androidLogger()
             androidContext(this@App)
             modules(
-                listOf(appModule, networkModule, repositoryModule)
+                listOf(appModule, networkModule, repositoryModule, navigationModule)
             )
         }
     }

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.koin.core.component.KoinComponent
+import org.koin.core.KoinComponent
 
 open class BaseViewModel: ViewModel(), LifecycleObserver, KoinComponent {
 

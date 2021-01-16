@@ -1,6 +1,8 @@
 package com.example.olltvapplication.data
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 data class OllTvDemoResponse(
@@ -23,10 +25,11 @@ data class OllTvDemoResponse(
     @SerializedName("total")
     var total: Int,
     @SerializedName("items")
-    var items: List<ResponseItem>?
+    var items: List<ChannelItem>?
 )
 
-data class ResponseItem(
+@Parcelize
+data class ChannelItem(
     @SerializedName("id")
     var id: Long,
     @SerializedName("channel_id")
@@ -62,10 +65,11 @@ data class ResponseItem(
     @SerializedName("FK_catalog")
     var fkCatalog: Int,
     @SerializedName("subs")
-    var subs: ResponseItemSubs
-)
+    var subs: ChannelItemSubs
+): Parcelable
 
-data class ResponseItemSubs(
+@Parcelize
+data class ChannelItemSubs(
     @SerializedName("id")
     var id: Long,
     @SerializedName("price")
@@ -76,4 +80,4 @@ data class ResponseItemSubs(
     var subsId: Long,
     @SerializedName("type")
     var type: String
-)
+): Parcelable

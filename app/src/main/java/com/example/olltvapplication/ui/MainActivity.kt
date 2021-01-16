@@ -1,69 +1,56 @@
 package com.example.olltvapplication.ui
 
-import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
-import android.provider.Settings
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.olltvapplication.R
 import com.example.olltvapplication.databinding.ActivityMainBinding
-import com.example.olltvapplication.extension.visibleOrGone
-import com.example.olltvapplication.ui.adapter.ItemsAdapter
+import com.example.olltvapplication.navigation.MainActivityToolbarWrapper
 import com.example.olltvapplication.viewBinding.viewBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : MainNavigationActivity(), MainActivityToolbarWrapper {
 
-    companion object {
-        private const val PRE_FETCH_DISTANCE = 5
-    }
-
-    private val viewModel: MainActivityViewModel by viewModel()
+    override fun getNavControllerLayoutRes() = R.id.navHostFragment
 
     private val bindingView by viewBinding(ActivityMainBinding::bind, R.id.root_view)
 
-    private lateinit var adapter: ItemsAdapter
-
-    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        adapter = ItemsAdapter(this)
-        val linearLayoutManager = LinearLayoutManager(this)
-        bindingView.recyclerView.layoutManager = linearLayoutManager
-        bindingView.recyclerView.adapter = adapter
-        adapter.setOnItemClickListener { _, item, _, _ ->
-            Toast.makeText(this, "Clicked: ${item.channelName}", Toast.LENGTH_SHORT).show()
-        }
-
-        adapter.setOnBindListener { _, _, position ->
-            adapter.itemCount.let {
-                if (position == it - PRE_FETCH_DISTANCE) loadMore()
-            }
-        }
-
-        viewModel.androidId = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
-        viewModel.loadData()
-
-        viewModel.itemList.observe(this, Observer {
-            adapter.addItems(it)
-        })
-
-        viewModel.loadingEvent.observe(this) {
-            bindingView.progressBar.visibleOrGone(it)
-        }
+        setNavigation()
     }
 
-    private fun loadMore() {
-        viewModel.loadingMore =
-            viewModel.totalProducts > 0 && adapter.items.size < viewModel.totalProducts
+    override fun onBack() {
+        setResult(Activity.RESULT_CANCELED)
+        finish()
+    }
 
-        viewModel.direction = 1
-        viewModel.getMoreProducts()
+    private fun setNavigation() {
+        bindingView.navToolbar.navigationMainToolbarActionListener =
+            object : NavigationMainToolbarActionListener {
+                override fun onBackClick() {
+                    onBackPressed()
+                }
+            }
+    }
+
+    override fun onBackPressed() {
+        navController?.let { nav ->
+            val destinationId = nav.currentDestination?.id
+            if (destinationId == R.id.channelDetailsFragment) {
+                nav.popBackStack()
+            }
+        } ?: finish()
+    }
+
+    override fun hideAll() = bindingView.navToolbar.hideAll()
+
+    override fun showCloseBtn() = bindingView.navToolbar.showClose(MainActivityToolbar.CloseState.CLOSE)
+
+    override fun showBackBtn() = bindingView.navToolbar.showClose(MainActivityToolbar.CloseState.BACK)
+
+    override fun setToolbarTitle(text: String) {
+        bindingView.navToolbar.setTitle(text)
     }
 }
